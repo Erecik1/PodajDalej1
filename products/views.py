@@ -1,8 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Category
 from django.http import FileResponse, Http404
 from .forms import ProForm
+from .forms import ContactForm
+from django.core.mail import send_mail, BadHeaderError
 
 
 # Create your views here.
@@ -37,3 +39,25 @@ def pdf_view(request):
 def nowy_pro(request):
     form = ProForm()
     return render(request, 'nowy_produkt.html', {'form': form})
+
+def contact(request):
+	if request.method == 'POST':
+		form = ContactForm(request.POST)
+		if form.is_valid():
+			subject = "Website Inquiry" 
+			body = {
+			'first_name': form.cleaned_data['first_name'], 
+			'last_name': form.cleaned_data['last_name'], 
+			'email': form.cleaned_data['email_address'], 
+			'message':form.cleaned_data['message'], 
+			}
+			message = "\n".join(body.values())
+
+			try:
+				send_mail(subject, message, 'admin@example.com', ['admin@example.com']) 
+			except BadHeaderError:
+				return HttpResponse('Invalid header found.')
+			return redirect ("index.html")
+      
+	form = ContactForm()
+	return render(request, "contact.html", {'form':form})
