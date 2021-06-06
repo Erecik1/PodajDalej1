@@ -14,12 +14,15 @@ class Category(models.Model):
 
 # Create your models here.
 class Product(models.Model):
-    name = models.CharField(max_length=255)
-    price = models.FloatField()
-    stock = models.IntegerField()
-    describe = models.CharField(max_length=255, null=True)
-    category = models.ForeignKey(Category, verbose_name="Category", on_delete=models.PROTECT, null=True)
-    image_url = models.CharField(max_length=2083)
+    name = models.CharField(max_length=255, verbose_name="Nazwa produktu")
+    price = models.FloatField(verbose_name="Cena produktu")
+    stock = models.IntegerField(verbose_name="Sztuki")
+    describe = models.CharField(max_length=255, null=True, verbose_name="Opis produktu")
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, verbose_name="Kategoria")
+    image_url = models.CharField(max_length=2083, verbose_name="Url zdjęcia")
+
+    def __str__(self):
+        return self.name 
 
 
 class Offer(models.Model):

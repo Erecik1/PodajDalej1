@@ -10,6 +10,21 @@
 
     <div class="container">
 	    <div class="row">
+			{% if results %}
+			{% for result in results %}
+			<div class="col-md-3" style="margin-bottom: 10px; padding: 0px 5px;">
+				<div class="card" style="">
+					<div style="background: #020202 url({{ result.image_url }}); background-size: cover; background-position: center; background-repeat: no-repeat; width: 100%; height: 250px;"></div>
+					<div class="card-body">
+						<h5 class="card-title">{{ result.name }} - <strong>{{ result.price }} zł</strong></h5>
+						<p class="card-text">{{ result.describe }}</p>
+						<p class="card-text">Kategoria: {{ result.category }}</p>
+						<a href="#" class="btn btn-warning">Dodaj do koszyka</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% else %}
 			{% for product in products %}
 				<div class="col-md-3" style="margin-bottom: 10px; padding: 0px 5px;">
 					<div class="card" style="">
@@ -18,11 +33,12 @@
 							<h5 class="card-title">{{ product.name }} - <strong>{{ product.price }} zł</strong></h5>
 							<p class="card-text">{{ product.describe }}</p>
                             <p class="card-text">Kategoria: {{ product.category }}</p>
-							<a href="#" class="btn btn-primary">Dodaj do ulubionych</a>
+							<a href="#" class="btn btn-warning">Dodaj do koszyka</a>
 						</div>
 					</div>
 				</div>
 			{% endfor %}
+			{% endif %}
 		</div>
     </div>
 {% endblock %}

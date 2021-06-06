@@ -8,9 +8,20 @@ from django.core.mail import send_mail, BadHeaderError
 
 
 # Create your views here.
-def index(request):
+"""def index(request):
     # return HttpResponse('Hello World')
     products = Product.objects.all()
+    return render(request, 'index.html',
+                  {'products': products})
+"""
+def index(request):
+    products = Product.objects.all()
+    if request.method == "POST":
+        query_name = request.POST.get('name', None)
+        if query_name:
+            results = Product.objects.filter(name__contains=query_name)
+            return render(request, 'index.html', {"results":results})
+
     return render(request, 'index.html',
                   {'products': products})
 
@@ -37,8 +48,18 @@ def pdf_view(request):
         raise Http404()
 
 def nowy_pro(request):
+    #POPRAWIĆ BO ZLE OZNACZENIA
     form = ProForm()
+    if(request.method == 'POST'):
+        title = request.POST['title']
+        text = request.POST['text']
+        action = Product(title = title, text = text)
+        action.save()
+        return redirect('index')
     return render(request, 'nowy_produkt.html', {'form': form})
+
+def cart(request):
+	return render(request, 'cart.html')
 
 def contact(request):
 	if request.method == 'POST':
