@@ -12,6 +12,3 @@ def index(request):
 
 def new(request):
         return render(request, 'index.html')    
-
-def about(request):
-    return render(request, 'about.html')
