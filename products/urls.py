@@ -13,4 +13,5 @@ urlpatterns = [
     url('regulamin/', views.pdf_view),
     url('contact/', views.contact, name="contact"),
     url('cart/', views.cart, name='cart'),
+    url('onas/', views.about, name='onas')
 ]

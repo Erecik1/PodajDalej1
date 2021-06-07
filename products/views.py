@@ -51,11 +51,16 @@ def nowy_pro(request):
     #POPRAWIĆ BO ZLE OZNACZENIA
     form = ProForm()
     if(request.method == 'POST'):
-        title = request.POST['title']
-        text = request.POST['text']
-        action = Product(title = title, text = text)
+        name = request.POST['name']
+        price = request.POST['price']
+        stock = request.POST['stock']
+        describe = request.POST['describe']
+        category = Category.objects.get(id=request.POST['category'])
+        image_url = request.POST['image_url']
+        action = Product(name = name, price = price, stock= stock, describe = describe,
+        category = category, image_url = image_url)
         action.save()
-        return redirect('index')
+        return redirect('home')
     return render(request, 'nowy_produkt.html', {'form': form})
 
 def cart(request):
@@ -82,3 +87,7 @@ def contact(request):
       
 	form = ContactForm()
 	return render(request, "contact.html", {'form':form})
+
+
+def about(request):
+    return render(request, 'about.html')
