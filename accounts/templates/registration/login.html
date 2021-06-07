@@ -43,6 +43,9 @@
         {% for field in form %}
         <label for="login">{{field.label}}</label>
         {{ field }}
+        {% for error in field.errors %}
+        {{ error }}
+        {% endfor %}
         {% endfor %}
         <input type="submit" id="submit" value="login">
       </form>
