@@ -53,11 +53,12 @@
             <ul class="navbar-nav ml-auto">
 
             {% if user.is_authenticated %}
+            
             <li class="nav-item">
               <a class="nav-link text-white" href="{% url 'new' %}">Dodaj nowy produkt </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> Koszyk </a>
+              <a class="nav-link text-white" href="{% url 'cartview' %}"><i class="fa fa-shopping-cart"></i> Koszyk {{request.session.cart|length}}</a>
             </li>
               <li class="nav-item">
                 <a class="nav-link text-white" href="{% url 'accounts:logout' %}">Wyloguj</a>

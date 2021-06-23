@@ -1,6 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from .models import Product
+from django.shortcuts import render, redirect
+from products.models import Product
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
 
 
 # Create your views here.
@@ -12,3 +14,5 @@ def index(request):
 
 def new(request):
         return render(request, 'index.html')    
+
+

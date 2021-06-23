@@ -8,6 +8,7 @@
 <a class="navbar-brand" href="{% url 'home' %}">Strona główna</a>
 {% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="page">
   <div class="container">
     <div class="left">

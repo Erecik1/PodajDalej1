@@ -19,7 +19,7 @@ class Product(models.Model):
     stock = models.IntegerField(verbose_name="Sztuki")
     describe = models.CharField(max_length=255, null=True, verbose_name="Opis produktu")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, verbose_name="Kategoria")
-    image_url = models.CharField(max_length=2083, verbose_name="Url zdjęcia")
+    image = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True, verbose_name="Zdjęcie produktu")
 
     def __str__(self):
         return self.name 

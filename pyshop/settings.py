@@ -27,12 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['35.246.20.191','127.0.0.1']
 
-
+                                                                                                                                                    
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',                                                                                                                                                                                                                                                                                                  
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -140,3 +140,9 @@ EMAIL_HOST_USER = "podajdalejstrona@gmail.com"
 EMAIL_HOST_PASSWORD = "haslohaslohaslo"
 
 CART_SESSION_ID = 'cart'
+
+# Base url to serve media files
+MEDIA_URL = '/media/'
+
+# Path where media is stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

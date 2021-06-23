@@ -5,6 +5,11 @@ from django.http import FileResponse, Http404
 from .forms import ProForm
 from .forms import ContactForm
 from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from products.models import Product
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
 
 
 # Create your views here.
@@ -47,7 +52,7 @@ def pdf_view(request):
     except FileNotFoundError:
         raise Http404()
 
-def nowy_pro(request):
+"""def nowy_pro(request):
     #POPRAWIĆ BO ZLE OZNACZENIA
     form = ProForm()
     if(request.method == 'POST'):
@@ -56,12 +61,25 @@ def nowy_pro(request):
         stock = request.POST['stock']
         describe = request.POST['describe']
         category = Category.objects.get(id=request.POST['category'])
-        image_url = request.POST['image_url']
+        image = request.FILES['image']
         action = Product(name = name, price = price, stock= stock, describe = describe,
-        category = category, image_url = image_url)
+        category = category, image = image)
         action.save()
         return redirect('home')
+    return render(request, 'nowy_produkt.html', {'form': form})"""
+
+def nowy_pro(request):
+    if request.method == "POST":
+        form = ProForm(request.POST, request.FILES)
+        if form.is_valid():
+            newForm = form.save(commit=False)
+            newForm.image = form.cleaned_data['image']
+            newForm.save()
+            return redirect('home')
+    else:
+        form = ProForm()
     return render(request, 'nowy_produkt.html', {'form': form})
+        
 
 def cart(request):
 	return render(request, 'cart.html')
@@ -91,3 +109,43 @@ def contact(request):
 
 def about(request):
     return render(request, 'about.html')
+
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("home")
+
+
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.remove(product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/users/login")
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("cart_detail")
+
+
+def item_decrement(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/users/login")
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/users/login")
+def cart_detail(request):
+    return render(request, 'cart/cart_detail.html')
